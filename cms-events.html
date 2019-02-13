@@ -1,0 +1,135 @@
+
+<style>
+
+  :host {
+    display:          flex;
+    align-items:      center;
+    flex-direction:   column;
+    min-height:       100vh;
+    background-color: var(--app-background-color);
+  }
+
+  #content {
+    display:   block;
+    max-width: 400px;
+    padding:   16px;
+  }
+
+  #content[hidden] {
+    display: none;
+  }
+
+  #event-selector-btns {
+    display:         flex;
+    flex-direction:  column;
+    width:           100%;
+    margin:          32px 0px;
+  }
+
+  .buttons {
+    background-color: var(--app-background-color);
+    margin:           16px 8px;
+  }
+
+  .add-new-btn {
+    @apply --paper-button-with-icon-mixin;
+    margin:           16px auto 32px auto;
+    background-color: var(--app-dark-color);
+    color:            white;
+  }
+
+  .add-new-btn iron-icon {
+    @apply --iron-icon-inside-paper-button-mixin;
+  }
+
+  #dragList {
+    --grid-column-min: 150px;
+    --grid-column-max: 1fr;
+  }
+
+  .selected {
+    background-color: var(--app-accent-color);
+    color:            var(--light-text-color);
+  }
+
+
+  .full-screen-preview {
+    border: 8px solid var(--app-disabled-color);
+  }
+
+  .modal-call-to-action-btns {
+    background-color: var(--app-accent-color);
+    color:            var(--light-text-color);
+  }
+
+  .modal-dismiss-btns {
+    color: var(--app-accent-color);
+  }
+
+</style>
+
+
+<div id="event-selector-btns">
+  <paper-button class="buttons add-new-btn" 
+  							on-click="__addNewButtonClicked" 
+  							raised>
+    <iron-icon icon="cms-icons:add"></iron-icon>
+    add event
+  </paper-button>
+  <drag-drop-list id="dragList"
+                  sortable=".sortable"
+                  on-sort-finish="__handleSortFinished">
+    <template is="dom-repeat" 
+    					items="[[_targets]]" 
+    					as="target" 
+    					on-dom-change="__handleSortFinished">
+      <paper-button class$="sortable buttons [[__computeSelectedClass(_selected, target)]]" 
+                    on-click="__targetButtonClicked"
+                    target="[[target]]" 
+                    raised>
+        [[target]]
+      </paper-button>
+    </template>
+  </drag-drop-list>
+</div>
+
+<div id="content" hidden="[[!_selected]]">
+  <event-item id="eventItem"
+              events-order="[[_eventsOrder]]" 
+              target="[[_selected]]"
+              on-item-deleted="__eventItemDeleted"
+              event-item="{{eventItem}}"
+              seats="[[seats]]">    
+    <h3>Item Preview</h3>
+    <slot></slot>    
+  </event-item>
+</div>
+
+
+<app-modal id="newEventModal"
+           heading="New Event">
+  <div slot="card-content-slot">
+    <p>
+      Please name the new event.
+    </p>
+    <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                 autocorrect
+                 autofocus
+                 autocomplete
+                 auto-validate
+                 label="Event Name"
+                 on-value-changed="__newEventNameInputChanged"
+                 tabindex="0">
+    </paper-input>
+  </div>
+  <div slot="card-actions-slot">
+    <paper-button class="modal-call-to-action-btns"               
+                  on-click="__newEventModalAddButtonClicked">
+      add
+    </paper-button>
+    <paper-button class="modal-dismiss-btns" 
+    							on-click="__dismissNewEventModalButtonClicked">
+      dismiss
+    </paper-button>    
+  </div>
+</app-modal>
