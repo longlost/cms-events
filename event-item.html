@@ -8,17 +8,16 @@
     transition: opacity 0.2s ease-in;
   }
 
-  h3 {
-    @apply --divider-mixin;
-    margin:  0px;
-    padding: 32px 0px 16px 0px;
+  #content {
+    padding: 16px;
   }
 
   .checkboxes-wrapper {
     display:         flex;
     flex-wrap:       wrap;
     justify-content: space-between;
-    margin-bottom:   16px;
+    max-width:       414px;
+    margin:          0px auto 64px auto;
   }
 
   paper-checkbox {    
@@ -33,12 +32,15 @@
     --paper-checkbox-label-color: var(--dark-text-color);
   }
 
-  iron-icon {
-    color: var(--app-primary-color);
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-gap: 32px;
   }
 
-  #inputs-wrapper {
-    margin: 32px 0px;
+  iron-icon {
+    margin-right: 8px;
+    color:        var(--app-primary-color);
   }
 
   paper-input {
@@ -49,25 +51,12 @@
     };
   }
 
-  #details-container {
-    margin-top: 32px;
-  }
-
   #details-heading {
     margin-bottom: 4px;
   }
 
   paper-textarea {
     margin-bottom: 32px;
-    width:         240px; /* setting width to 240 stops weird horizontal growth in chrome */
-    --paper-input-container: {
-      width: 240px; /* setting width to 240 stops weird horizontal growth in chrome */
-    };
-  }
-
-  #bullets {
-    margin-bottom:  32px;
-    padding-bottom: 32px;
   }
 
   #add-bullet-btn {
@@ -75,23 +64,29 @@
     color:            white;
   }
 
-  #editor {
-    @apply --bottom-divider-mixin;
-    margin-bottom:  32px;
-    padding-bottom: 32px;
+  #preview-wrapper {
+    @apply --divider-mixin;
   }
 
-  #preview-slot ::slotted(*) {
-    margin: 32px 0px;
+  #preview-content {
+    padding: 16px;
+  }
+
+  #btn-wrapper {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    padding:        16px 16px 128px 16px;
   }
 
   .full-width-buttons {
-    width:  100%;
-    margin: 16px 0px;
+    width:     100%;
+    max-width: 414px;
+    margin:    16px 0px;
   }
 
   #publish-changes-btn {
-    color:            white;
+    color:            var(--constant-dark-text);
     background-color: var(--app-accent-color);
   }
 
@@ -101,7 +96,7 @@
   }
 
   #delete-event-btn {
-    color:            white;
+    color:            var(--constant-light-text);
     background-color: var(--app-error-color);
   }
 
@@ -112,7 +107,7 @@
 
   .modal-call-to-action-btns {
     background-color: var(--app-error-color);
-    color:            var(--light-text-color);
+    color:            var(--constant-light-text);
   }
 
   .modal-dismiss-btns {
@@ -120,32 +115,20 @@
     color:            var(--app-accent-color);
   }
 
-  /* Desktops and laptops ----------- */
-  /* put previews to the right of editor */
-  @media only screen  and (min-width : 1025px) {
+  
+  @media only screen  and (max-width : 415px) {
 
-    :host {
-      left:          calc(-50% + 44px);
-      margin-bottom: 256px;
-    }
-
-    #preview-slot::slotted(*) {
-      margin:    0px;
-      position:  absolute;
-      top:       0px;
-      left:      calc(100% + 32px);
-      max-width: 400px;
-      width:     28vw;
-    }
+    
 
   }
 
 </style>
 
 
-<h3>Edit Event</h3>
+<div id="content">  
 
-<div id="inputs-wrapper">
+  <h3>Edit Event</h3>
+
   <div class="checkboxes-wrapper">
     <paper-checkbox checked="[[_attributes.featured]]" 
                     on-checked-changed="__featuredCheckboxChanged">
@@ -156,122 +139,138 @@
       Pre-Register
     </paper-checkbox>
   </div>
-  <paper-input label="Title" 
-               autocorrect 
-               autocomplete 
-               autocapitalize 
-               tabindex="0"
-               on-value-changed="__titleInputChanged"
-               value="[[_attributes.title]]">
-    <iron-icon icon="cms-icons:title" slot="prefix"></iron-icon>
-  </paper-input>
-  <paper-input label="Fee" 
-               allowed-pattern="[0-9.]"
-               autocorrect 
-               autocomplete 
-               autocapitalize 
-               tabindex="0"
-               type="tel"
-               on-value-changed="__feeInputChanged"
-               value="[[_attributes.fee]]">
-    <iron-icon icon="cms-icons:monetization-on" slot="prefix"></iron-icon>
-  </paper-input>
-  <paper-input label="Seats" 
-               allowed-pattern="[0-9.]"
-               autocorrect 
-               autocomplete 
-               autocapitalize 
-               tabindex="0"
-               type="tel"
-               on-value-changed="__seatsInputChanged"
-               value="[[_attributes.seats]]">
-    <iron-icon icon="asg-icons:event-seat" slot="prefix"></iron-icon>
-  </paper-input>
-  <paper-input label="Date and/or Time" 
-               autocorrect 
-               autocomplete 
-               autocapitalize 
-               tabindex="0"
-               on-value-changed="__dateInputChanged"
-               value="[[_attributes.date]]">
-    <iron-icon icon="cms-icons:event" slot="prefix"></iron-icon>
-  </paper-input>
-  <paper-input label="Rules Link Label" 
-               autocorrect 
-               autocomplete 
-               autocapitalize 
-               tabindex="0"
-               on-value-changed="__rulesLinkLableInputChanged"
-               value="[[_attributes.rulesLinkLabel]]">
-    <iron-icon icon="cms-icons:label" slot="prefix"></iron-icon>
-  </paper-input>
-  <paper-input label="Rules Link" 
-               tabindex="0"
-               on-value-changed="__rulesLinkInputChanged"
-               value="[[_attributes.rulesLink]]">
-    <iron-icon icon="cms-icons:link" slot="prefix"></iron-icon>
-  </paper-input>
+
+  <div id="grid">
+
+    <div>  
+      <paper-input label="Title" 
+                   autocorrect 
+                   autocomplete 
+                   autocapitalize 
+                   tabindex="0"
+                   on-value-changed="__titleInputChanged"
+                   value="[[_attributes.title]]">
+        <iron-icon icon="cms-icons:title" slot="prefix"></iron-icon>
+      </paper-input>
+      <paper-input label="Fee" 
+                   allowed-pattern="[0-9.]"
+                   autocorrect 
+                   autocomplete 
+                   autocapitalize 
+                   tabindex="0"
+                   type="tel"
+                   on-value-changed="__feeInputChanged"
+                   value="[[_attributes.fee]]">
+        <iron-icon icon="cms-icons:monetization-on" slot="prefix"></iron-icon>
+      </paper-input>
+      <paper-input label="Seats" 
+                   allowed-pattern="[0-9.]"
+                   autocorrect 
+                   autocomplete 
+                   autocapitalize 
+                   tabindex="0"
+                   type="tel"
+                   on-value-changed="__seatsInputChanged"
+                   value="[[_attributes.seats]]">
+        <iron-icon icon="app-icons:event-seat" slot="prefix"></iron-icon>
+      </paper-input>
+      <paper-input label="Date and/or Time" 
+                   autocorrect 
+                   autocomplete 
+                   autocapitalize 
+                   tabindex="0"
+                   on-value-changed="__dateInputChanged"
+                   value="[[_attributes.date]]">
+        <iron-icon icon="cms-icons:event" slot="prefix"></iron-icon>
+      </paper-input>
+      <paper-input label="Rules Link Label" 
+                   autocorrect 
+                   autocomplete 
+                   autocapitalize 
+                   tabindex="0"
+                   on-value-changed="__rulesLinkLableInputChanged"
+                   value="[[_attributes.rulesLinkLabel]]">
+        <iron-icon icon="cms-icons:label" slot="prefix"></iron-icon>
+      </paper-input>
+      <paper-input label="Rules Link" 
+                   tabindex="0"
+                   on-value-changed="__rulesLinkInputChanged"
+                   value="[[_attributes.rulesLink]]">
+        <iron-icon icon="cms-icons:link" slot="prefix"></iron-icon>
+      </paper-input>
+    </div>
+
+    <div>
+      <div id="details-heading">
+        <iron-icon icon="cms-icons:description"></iron-icon>
+        Details
+      </div>  
+      <!-- Warning!!! CANNOT use autocorrect in v3.0.1 of paper-input because it CRASHES safari -->
+      <paper-textarea autocomplete
+                      autocapitalize
+                      placeholder="Describe the event here"
+                      on-value-changed="__textAreaValueChanged" 
+                      required
+                      value="[[_attributes.details]]">
+      </paper-textarea>
+    </div>
+
+    <div>
+      <template is="dom-repeat"
+                items="[[_attributes.bullets]]">    
+        <paper-input autocomplete
+                     autocorrect
+                     autocapitalize
+                     tabindex="0"
+                     value="[[item]]"
+                     on-value-changed="__bulletInputChanged">
+          <iron-icon icon="asg-icons:logo" slot="prefix"></iron-icon>
+          <paper-icon-button icon="app-icons:close" 
+                             slot="suffix"
+                             on-click="__removeBulletBtnClicked">
+          </paper-icon-button>
+        </paper-input>         
+      </template>
+      <paper-button id="add-bullet-btn" 
+                    on-click="__addBulletBtnClicked" 
+                    raised>
+        add bullet
+      </paper-button>
+    </div>
+
+    <div>    
+      <h3>Edit Event Image</h3>
+      <cms-image-editor id="editor"
+                        no-save-button
+                        target="[[target]]"
+                        type="events">
+      </cms-image-editor>
+    </div>
+
+  </div>
 </div>
 
-<div id="details-container">
-  <div id="details-heading">
-    <iron-icon icon="cms-icons:description"></iron-icon>
-    Details
-  </div>  
-  <!-- Warning!!! CANNOT use autocorrect in v3.0.1 of paper-input because it CRASHES safari -->
-  <paper-textarea autocomplete
-                  autocapitalize
-                  placeholder="Describe the event here"
-                  on-value-changed="__textAreaValueChanged" 
-                  required
-                  value="[[_attributes.details]]">
-  </paper-textarea>
+<div id="preview-wrapper">
+  <div id="preview-content">
+    <h3>Item Preview</h3>
+    <slot id="preview-slot"></slot>
+  </div>
 </div>
 
-<div id="bullets">
-  <template is="dom-repeat"
-            items="[[_attributes.bullets]]">    
-    <paper-input autocomplete
-                 autocorrect
-                 autocapitalize
-                 tabindex="0"
-                 value="[[item]]"
-                 on-value-changed="__bulletInputChanged">
-      <iron-icon icon="asg-icons:logo" slot="prefix"></iron-icon>
-      <paper-icon-button icon="app-icons:close" 
-                         slot="suffix"
-                         on-click="__removeBulletBtnClicked">
-      </paper-icon-button>
-    </paper-input>         
-  </template>
-  <paper-button id="add-bullet-btn" 
-                on-click="__addBulletBtnClicked" 
-                raised>
-    add bullet
+<div id="btn-wrapper">
+  <paper-button id="publish-changes-btn" 
+                class="full-width-buttons"
+                disabled="[[__computePublishBtnDisabled(_imageReady, _attributesComplete)]]"
+                on-click="__publishChangesButtonClicked" 
+                raised>publish changes
+  </paper-button>
+    
+  <paper-button id="delete-event-btn"
+                class="full-width-buttons"
+                on-click="__deleteEventButtonClicked" 
+                raised>delete event
   </paper-button>
 </div>
-    
-<h3>Edit Event Image</h3>
-<cms-image-editor id="editor"
-                  no-save-button
-                  target="[[target]]"
-                  type="events">
-</cms-image-editor>
-
-<slot id="preview-slot"></slot>
-
-<paper-button id="publish-changes-btn" 
-              class="full-width-buttons"
-              disabled="[[__computePublishBtnDisabled(_imageReady, _attributesComplete)]]"
-              on-click="__publishChangesButtonClicked" 
-              raised>publish changes
-</paper-button>
-  
-<paper-button id="delete-event-btn"
-              class="full-width-buttons"
-              on-click="__deleteEventButtonClicked" 
-              raised>delete event
-</paper-button>
 
 <app-spinner id="spinner" full-screen></app-spinner>
 
