@@ -2,17 +2,16 @@
 <style>
 
   :host {
-    display:          flex;
-    align-items:      center;
-    flex-direction:   column;
+    display:          block;
     min-height:       100vh;
     background-color: var(--app-background-color);
   }
 
   #content {
     display:   block;
-    max-width: 400px;
-    padding:   16px;
+    max-width: 1024px;
+    width:     100%;
+    margin:    0px auto;
   }
 
   #content[hidden] {
@@ -20,10 +19,11 @@
   }
 
   #event-selector-btns {
-    display:         flex;
-    flex-direction:  column;
-    width:           100%;
-    margin:          32px 0px;
+    @apply --bottom-divider-mixin;
+    display:        flex;
+    flex-direction: column;
+    margin-bottom:  32px;
+    padding:        16px;
   }
 
   .buttons {
@@ -45,13 +45,19 @@
   #dragList {
     --grid-column-min: 150px;
     --grid-column-max: 1fr;
+    width:     100%;
+    max-width: 1024px;
+    margin:    0px auto;
+  }
+
+  .sortable.buttons {
+    justify-self: center;
   }
 
   .selected {
     background-color: var(--app-accent-color);
-    color:            var(--light-text-color);
+    color:            var(--constant-dark-text);
   }
-
 
   .full-screen-preview {
     border: 8px solid var(--app-disabled-color);
@@ -71,8 +77,8 @@
 
 <div id="event-selector-btns">
   <paper-button class="buttons add-new-btn" 
-  							on-click="__addNewButtonClicked" 
-  							raised>
+                on-click="__addNewButtonClicked" 
+                raised>
     <iron-icon icon="cms-icons:add"></iron-icon>
     add event
   </paper-button>
@@ -80,9 +86,9 @@
                   sortable=".sortable"
                   on-sort-finish="__handleSortFinished">
     <template is="dom-repeat" 
-    					items="[[_targets]]" 
-    					as="target" 
-    					on-dom-change="__handleSortFinished">
+              items="[[_targets]]" 
+              as="target" 
+              on-dom-change="__handleSortFinished">
       <paper-button class$="sortable buttons [[__computeSelectedClass(_selected, target)]]" 
                     on-click="__targetButtonClicked"
                     target="[[target]]" 
@@ -99,8 +105,7 @@
               target="[[_selected]]"
               on-item-deleted="__eventItemDeleted"
               event-item="{{eventItem}}"
-              seats="[[seats]]">    
-    <h3>Item Preview</h3>
+              seats="[[seats]]"> 
     <slot></slot>    
   </event-item>
 </div>
@@ -128,7 +133,7 @@
       add
     </paper-button>
     <paper-button class="modal-dismiss-btns" 
-    							on-click="__dismissNewEventModalButtonClicked">
+                  on-click="__dismissNewEventModalButtonClicked">
       dismiss
     </paper-button>    
   </div>
