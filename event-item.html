@@ -22,9 +22,11 @@
 
   paper-checkbox {    
     margin-bottom: 16px;
-    --paper-checkbox-checked-color:     var(--app-primary-color);
-    --paper-checkbox-checked-ink-color: var(--app-primary-color);
-    --paper-checkbox-label-color:       var(--secondary-text-color);
+    --paper-checkbox-unchecked-color:     var(--dark-text-color);
+    --paper-checkbox-unchecked-ink-color: var(--dark-text-color);
+    --paper-checkbox-checked-color:       var(--app-primary-color);
+    --paper-checkbox-checked-ink-color:   var(--app-primary-color);
+    --paper-checkbox-label-color:         var(--secondary-text-color);
   }
 
   paper-checkbox[checked] {
@@ -45,6 +47,7 @@
 
   paper-input {
     --paper-input-container-color:       var(--secondary-text-color);
+    --paper-input-container-input-color: var(--dark-text-color);
     --paper-input-container-focus-color: var(--app-primary-color);
     --paper-input-container-underline-focus: { /* broken paper-input fix (3.0.0-pre.1) */
       transition: transform 0.25s ease-in-out;
@@ -57,11 +60,16 @@
 
   paper-textarea {
     margin-bottom: 32px;
+    --paper-input-container-input-color: var(--dark-text-color);
   }
 
   #add-bullet-btn {
     background-color: var(--app-primary-color);
     color:            white;
+  }
+
+  #editor {
+    --drop-zone-background-color: var(--app-accent-color);
   }
 
   #preview-wrapper {
@@ -113,13 +121,6 @@
   .modal-dismiss-btns {
     background-color: var(--app-background-color);
     color:            var(--app-accent-color);
-  }
-
-  
-  @media only screen  and (max-width : 415px) {
-
-    
-
   }
 
 </style>
