@@ -221,7 +221,7 @@ class SpritefulCmsEventItem extends SpritefulElement {
   __feeInputChanged(event) {
     const {value} = event.detail;
     this.set('_attributes.fee',    value);
-    this.set('_attributes.amount', value.toFixed(2));
+    this.set('_attributes.amount', Number(value).toFixed(2));
   }
 
 
