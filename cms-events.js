@@ -10,6 +10,7 @@ import {
   SpritefulElement, 
   html
 }                 from '@spriteful/spriteful-element/spriteful-element.js';
+import {schedule} from '@spriteful/utils/utils.js';
 import htmlString from './cms-events.html';
 import services   from '@spriteful/services/services.js';
 import '@spriteful/app-modal/app-modal.js';
@@ -18,7 +19,7 @@ import '@spriteful/cms-icons/cms-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
-import './event-item.js';
+import './event-card.js';
 
 
 class SpritefulCmsEvents extends SpritefulElement {
@@ -31,26 +32,34 @@ class SpritefulCmsEvents extends SpritefulElement {
 
   static get properties() {
     return {
-      // passed up (will need to change to events for lit-html)
-      eventItem: {
-        type: Object,
-        notify: true
+
+      // coll: {
+      //   type: String,
+      //   value: 'cms/ui/events'
+      // },
+
+      coll: {
+        type: String,
+        value: 'cms/ui/test-events'
       },
-      // pass through
-      seats: Number,
+
+
+
 
       user: Object,
+
+      _events: Array,
       // passed to each event-item
       _eventsOrder: Array,
 
       _newEventName: String,
-
+      // for clicked event-card styles
       _selected: {
         type: String,
         value: ''
       },
 
-      _targets: Array
+      _unsubscribe: Object
 
     };
   }
@@ -63,26 +72,55 @@ class SpritefulCmsEvents extends SpritefulElement {
   }
 
 
-  __computeSelectedClass(selected, target) {
-    if (!selected || !target) { return ''; }
-    return selected === target ? 'selected' : '';
+  __computeSelectedClass(selected, item) {
+    if (!selected || !item) { return ''; }
+    return selected === item.name ? 'selected' : '';
+  }
+
+
+  __reset() {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+      this._unsubscribe = undefined;
+    }
   }
 
 
   async __userChanged(user) {
-    if (!user) { return; }
-    // fetch available events
-    const events  = await services.getAll({coll: 'cms/ui/events'});
-    // respecting saved event index to display them in proper order
-    this._targets = events.
-      reduce((accum, event) => {
-        const {displayName, index} = event;
-        if (typeof index === 'number') {
-          accum[index] = displayName;
-        }
-        return accum;
-      }, []).
-      filter(target => target);
+    if (!user) {
+      this.__reset();
+      return; 
+    }
+
+    const callback = async dbVal => {
+      this._events = undefined; // force template to restamp
+      await schedule();         // force template to restamp
+      this._events = dbVal;
+    };
+
+    const errorCallback = error => {
+      this._events = undefined;
+      if (
+        error.message &&
+        error.message.includes('document does not exist')
+      ) { return; }
+      console.error(error);
+    };
+
+    this._unsubscribe = await services.subscribe({
+      callback, 
+      errorCallback,
+      coll: this.coll,      
+      // respecting saved event index to display them in proper order
+      orderBy: {prop: 'index'}
+    });
+  }
+
+
+  __openDetails(item) {    
+    this.fire('cms-events-open-details', {
+      value: item
+    });
   }
 
 
@@ -95,9 +133,10 @@ class SpritefulCmsEvents extends SpritefulElement {
     try {
       await this.clicked();
       await this.$.newEventModal.close();
-      this.push('_targets', this._newEventName);
-      this._selected     = this._newEventName;
-      this._newEventName = '';
+      this.__openDetails({
+        displayName: this._newEventName, 
+        index:      -1 // put new events at beginning of list
+      });
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -130,11 +169,12 @@ class SpritefulCmsEvents extends SpritefulElement {
   }
 
  
-  async __targetButtonClicked(event) {
+  async __eventClicked(event) {
     try {
       await this.clicked();
-      const {target} = event.model;
-      this._selected = target;
+      const {item}   = event.model;
+      this._selected = item.name;
+      this.__openDetails(item);
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -143,17 +183,27 @@ class SpritefulCmsEvents extends SpritefulElement {
   }
 
 
-  __handleSortFinished() {
-    this._eventsOrder = this.selectAll('.sortable').map(btn => btn.target);
-  }
+  async __handleSortFinished(event) {
+    try {
+      await this.debounce('cms-events-sort-debounce', 500);
 
+      const orderedItems = this.selectAll('.sortable').map(el => el.item);
+      if (!orderedItems.length) { return; }
 
-  __eventItemDeleted(event) {
-    const {target} = event.detail;
-    const remainingTargets = this._targets.filter(eventName => eventName !== target);
-    this._selected = '';
-    this.set('_targets', remainingTargets);
-    this.$.eventItem.reset();
+      const promises = orderedItems.map((item, index) => {
+        return services.set({
+          coll:  this.coll, 
+          doc:   item.name, 
+          data:  {index},
+          merge: true // only adding indexes to existing data
+        });
+      });
+      await Promise.all(promises);
+    }
+    catch (error) {
+      if (error === 'debounced') { return; }
+      console.error(error);
+    }
   }
 
 }
