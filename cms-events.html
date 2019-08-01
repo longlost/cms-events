@@ -8,50 +8,21 @@
   }
 
   #content {
-    display:   block;
-    max-width: 1024px;
-    width:     100%;
-    margin:    0px auto;
-  }
-
-  #content[hidden] {
-    display: none;
-  }
-
-  #event-selector-btns {
-    @apply --bottom-divider-mixin;
     display:        flex;
     flex-direction: column;
     margin-bottom:  32px;
-    padding:        16px;
+    padding:        16px 48px;
   }
 
-  .buttons {
-    background-color: var(--app-background-color);
-    margin:           16px 8px;
-  }
-
-  .add-new-btn {
+  #add-new-btn {
     @apply --paper-button-with-icon-mixin;
     margin:           16px auto 32px auto;
     background-color: var(--app-dark-color);
-    color:            white;
+    color:            var(--constant-light-text);
   }
 
-  .add-new-btn iron-icon {
+  #add-new-btn iron-icon {
     @apply --iron-icon-inside-paper-button-mixin;
-  }
-
-  #dragList {
-    --grid-column-min: 150px;
-    --grid-column-max: 1fr;
-    width:     100%;
-    max-width: 1024px;
-    margin:    0px auto;
-  }
-
-  .sortable.buttons {
-    justify-self: center;
   }
 
   .selected {
@@ -59,13 +30,18 @@
     color:            var(--constant-dark-text);
   }
 
-  .full-screen-preview {
-    border: 8px solid var(--app-disabled-color);
+  paper-input {
+    --paper-input-container-color:       var(--secondary-text-color);
+    --paper-input-container-input-color: var(--dark-text-color);
+    --paper-input-container-focus-color: var(--app-primary-color);
+    --paper-input-container-underline-focus: { /* broken paper-input fix (3.0.0-pre.1) */
+      transition: transform 0.25s ease-in-out;
+    };
   }
 
   .modal-call-to-action-btns {
     background-color: var(--app-accent-color);
-    color:            var(--light-text-color);
+    color:            var(--constant-dark-text);
   }
 
   .modal-dismiss-btns {
@@ -75,39 +51,25 @@
 </style>
 
 
-<div id="event-selector-btns">
-  <paper-button class="buttons add-new-btn" 
+<div id="content">
+  <paper-button id="add-new-btn" 
                 on-click="__addNewButtonClicked" 
                 raised>
     <iron-icon icon="cms-icons:add"></iron-icon>
-    add event
+    new event
   </paper-button>
+
   <drag-drop-list id="dragList"
                   sortable=".sortable"
                   on-sort-finish="__handleSortFinished">
     <template is="dom-repeat" 
-              items="[[_targets]]" 
-              as="target" 
-              on-dom-change="__handleSortFinished">
-      <paper-button class$="sortable buttons [[__computeSelectedClass(_selected, target)]]" 
-                    on-click="__targetButtonClicked"
-                    target="[[target]]" 
-                    raised>
-        [[target]]
-      </paper-button>
+              items="[[_events]]">
+      <event-card class$="sortable [[__computeSelectedClass(_selected, item)]]" 
+                  item="[[item]]"
+                  on-click="__eventClicked">
+      </event-card>
     </template>
   </drag-drop-list>
-</div>
-
-<div id="content" hidden="[[!_selected]]">
-  <event-item id="eventItem"
-              events-order="[[_eventsOrder]]" 
-              target="[[_selected]]"
-              on-item-deleted="__eventItemDeleted"
-              event-item="{{eventItem}}"
-              seats="[[seats]]"> 
-    <slot></slot>    
-  </event-item>
 </div>
 
 

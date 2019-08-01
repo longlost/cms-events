@@ -1,0 +1,45 @@
+
+<style>
+
+	:host {
+		/* flex - needed to collapse host to fit card
+		otherwise, ~2px below card is visible */
+		display: 	 flex; 
+		max-width: 88px;
+    margin:    8px;
+    background-color: var(--app-background-color);
+	}
+	
+	paper-card {
+		display: 				 	flex;
+    flex-direction:  	column;
+    justify-content: 	space-between;
+		width: 						100%;
+		background-color: inherit;
+		--paper-card-header-color: var(--constant-light-text);
+	}
+
+	.heading {
+		@apply --single-line-truncate-mixin;
+		font-size: 14px;
+		padding: 	 8px;
+	}
+
+	/* bigger than large phone sizes */
+	@media only screen and (min-width: 415px) {
+
+		:host {
+			max-width: 288px;
+		}
+
+	}
+
+</style>
+
+
+<paper-card image="[[__computeImg(item.images)]]" 
+						preload-image 
+						fade-image>
+	<div class="heading">[[item.displayName]]</div>
+  <paper-ripple></paper-ripple>
+</paper-card>
