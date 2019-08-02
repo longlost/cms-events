@@ -55,18 +55,10 @@ class SpritefulCmsEventDetails extends SpritefulElement {
   static get properties() {
     return {
 
-      // coll: {
-      //   type: String,
-      //   value: 'cms/ui/events'
-      // },
-
-
       coll: {
         type: String,
-        value: 'cms/ui/test-events'
+        value: 'cms/ui/events'
       },
-
-
 
       seats: Number,
 
@@ -74,7 +66,7 @@ class SpritefulCmsEventDetails extends SpritefulElement {
 
       _doc: {
         type: String,
-        computed: '__computeDoc(_item.displayName)'
+        computed: '__computeDoc(_item.name)'
       },
 
       _requiredAttrs: {
@@ -98,6 +90,7 @@ class SpritefulCmsEventDetails extends SpritefulElement {
 
   static get observers() {
     return [
+      '__docChanged(_doc)',
       '__itemChanged(_item.*)',
       '__seatsChanged(seats)'
     ];
@@ -108,14 +101,14 @@ class SpritefulCmsEventDetails extends SpritefulElement {
     super.connectedCallback();
 
     listen(this.$.editor, 'image-editor-ready-changed',  this.__imageChangesReady.bind(this));
-    listen(this.$.editor, 'data-changed', 							 this.__imageDataChanged.bind(this));
-    listen(this, 					'asg-event-card-open-details', this.__openPreviewDetails.bind(this));
+    listen(this.$.editor, 'data-changed',                this.__imageDataChanged.bind(this));
+    listen(this,          'asg-event-card-open-details', this.__openPreviewDetails.bind(this));
   }
 
 
-  __computeDoc(displayName) {
-    if (!displayName) { return ''; }
-    return removeSpacesAndCaps(displayName);
+  __computeDoc(name) {
+    if (!name) { return ''; }
+    return removeSpacesAndCaps(name);
   }
 
 
@@ -124,6 +117,12 @@ class SpritefulCmsEventDetails extends SpritefulElement {
       return false;
     }
     return true;
+  }
+
+
+  __docChanged(doc) {
+    if (!doc) { return; }
+    this.set('_item.id', doc);
   }
 
 
@@ -141,8 +140,8 @@ class SpritefulCmsEventDetails extends SpritefulElement {
 
 
   __seatsChanged(seats) {
-  	if (seats === undefined) { return; }
-  	this.set('_item.seats', seats);
+    if (seats === undefined) { return; }
+    this.set('_item.seats', seats);
   }
 
 
@@ -244,13 +243,9 @@ class SpritefulCmsEventDetails extends SpritefulElement {
       await this.clicked();
       await this.$.spinner.show('Saving changes...');
       await services.set({
-        coll: this.coll, 
-        doc:  this._doc, 
-        data:  {
-        	...this._item,
-          id: 	this._doc, // more precise nomenclature
-          name: this._doc  // backwards compat
-        },
+        coll:  this.coll, 
+        doc:   this._doc, 
+        data:  this._item,
         merge: true
       });
       message('Your changes are now live!'); 
@@ -271,11 +266,11 @@ class SpritefulCmsEventDetails extends SpritefulElement {
       await this.$.spinner.show('Deleting event...');
       await this.$.editor.deleteAll(); 
       await services.deleteDocument({
-      	coll: this.coll, 
-      	doc:  this._doc
+        coll: this.coll, 
+        doc:  this._doc
       });
       this._item = undefined;
-    	await this.$.overlay.close();
+      await this.$.overlay.close();
     }
     catch (error) {
       console.error(error);
@@ -325,14 +320,14 @@ class SpritefulCmsEventDetails extends SpritefulElement {
 
 
   async open(item) {
-  	try {
-  		this.set('_item', item);
-  		await schedule();
-  		await this.$.overlay.open();
-  	}
-  	catch(error) {
-  		console.error(error);
-  	}
+    try {
+      this.set('_item', item);
+      await schedule();
+      await this.$.overlay.open();
+    }
+    catch(error) {
+      console.error(error);
+    }
   }
 
 }

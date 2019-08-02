@@ -1,5 +1,5 @@
 /**
- * `event-card`
+ * `cms-event-card`
  * display event image and name as an interactive element
  *
  * @customElement
@@ -10,13 +10,13 @@ import {
   SpritefulElement, 
   html
 }                 from '@spriteful/spriteful-element/spriteful-element.js';
-import htmlString from './event-card.html';
+import htmlString from './cms-event-card.html';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 
 
 class SpritefulEventCard extends SpritefulElement {
-  static get is() { return 'event-card'; }
+  static get is() { return 'cms-event-card'; }
 
   static get template() {
     return html([htmlString]);

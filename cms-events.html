@@ -64,10 +64,10 @@
                   on-sort-finish="__handleSortFinished">
     <template is="dom-repeat" 
               items="[[_events]]">
-      <event-card class$="sortable [[__computeSelectedClass(_selected, item)]]" 
-                  item="[[item]]"
-                  on-click="__eventClicked">
-      </event-card>
+      <cms-event-card class$="sortable [[__computeSelectedClass(_selected, item)]]" 
+                      item="[[item]]"
+                      on-click="__eventClicked">
+      </cms-event-card>
     </template>
   </drag-drop-list>
 </div>
@@ -77,8 +77,12 @@
            heading="New Event">
   <div slot="card-content-slot">
     <p>
-      Please name the new event.
+      Let's start by giving the new event a unique id/name.
     </p>
+    <p>
+      This identification is to be used <strong>internally</strong> as a <strong>model number</strong> or event <strong>shorthand</strong>.
+    </p>
+    <p>It is <strong>NOT DISPLAYED</strong> to users.</p>
     <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                  autocorrect
                  autofocus

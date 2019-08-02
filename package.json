@@ -1,6 +1,6 @@
 {
   "name": "@spriteful/cms-events",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "cms event editing page",
   "main": "cms-events.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "@spriteful/asg-icons": "^1.0.14",
     "@spriteful/cms-icons": "^1.0.2",
     "@spriteful/drag-drop-list": "^1.0.1",
-    "@spriteful/image-editor": "^1.0.1",
+    "@spriteful/image-editor": "^1.0.2",
     "@spriteful/lambda": "^1.3.9",
     "@spriteful/services": "^2.1.7",
     "@spriteful/spriteful-element": "^1.0.4",
