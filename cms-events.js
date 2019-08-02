@@ -19,7 +19,7 @@ import '@spriteful/cms-icons/cms-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
-import './event-card.js';
+import './cms-event-card.js';
 
 
 class SpritefulCmsEvents extends SpritefulElement {
@@ -33,18 +33,10 @@ class SpritefulCmsEvents extends SpritefulElement {
   static get properties() {
     return {
 
-      // coll: {
-      //   type: String,
-      //   value: 'cms/ui/events'
-      // },
-
       coll: {
         type: String,
-        value: 'cms/ui/test-events'
+        value: 'cms/ui/events'
       },
-
-
-
 
       user: Object,
 
@@ -74,7 +66,7 @@ class SpritefulCmsEvents extends SpritefulElement {
 
   __computeSelectedClass(selected, item) {
     if (!selected || !item) { return ''; }
-    return selected === item.name ? 'selected' : '';
+    return selected === item.id ? 'selected' : '';
   }
 
 
@@ -134,8 +126,8 @@ class SpritefulCmsEvents extends SpritefulElement {
       await this.clicked();
       await this.$.newEventModal.close();
       this.__openDetails({
-        displayName: this._newEventName, 
-        index:      -1 // put new events at beginning of list
+        name:   this._newEventName, 
+        index: -1 // put new events at beginning of list
       });
     }
     catch (error) {
@@ -173,7 +165,7 @@ class SpritefulCmsEvents extends SpritefulElement {
     try {
       await this.clicked();
       const {item}   = event.model;
-      this._selected = item.name;
+      this._selected = item.id;
       this.__openDetails(item);
     }
     catch (error) {
@@ -193,7 +185,7 @@ class SpritefulCmsEvents extends SpritefulElement {
       const promises = orderedItems.map((item, index) => {
         return services.set({
           coll:  this.coll, 
-          doc:   item.name, 
+          doc:   item.id, 
           data:  {index},
           merge: true // only adding indexes to existing data
         });
