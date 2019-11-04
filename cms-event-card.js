@@ -7,15 +7,15 @@
  * @demo demo/index.html
  */
 import {
-  SpritefulElement, 
+  AppElement, 
   html
-}                 from '@spriteful/spriteful-element/spriteful-element.js';
+}                 from '@longlost/app-element/app-element.js';
 import htmlString from './cms-event-card.html';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 
 
-class SpritefulEventCard extends SpritefulElement {
+class EventCard extends AppElement {
   static get is() { return 'cms-event-card'; }
 
   static get template() {
@@ -47,4 +47,4 @@ class SpritefulEventCard extends SpritefulElement {
 
 }
 
-window.customElements.define(SpritefulEventCard.is, SpritefulEventCard);
+window.customElements.define(EventCard.is, EventCard);
