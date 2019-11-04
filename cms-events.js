@@ -7,22 +7,22 @@
  * @demo demo/index.html
  */
 import {
-  SpritefulElement, 
+  AppElement, 
   html
-}                 from '@spriteful/spriteful-element/spriteful-element.js';
-import {schedule} from '@spriteful/utils/utils.js';
+}                 from '@longlost/app-element/app-element.js';
+import {schedule} from '@longlost/utils/utils.js';
 import htmlString from './cms-events.html';
-import services   from '@spriteful/services/services.js';
-import '@spriteful/app-modal/app-modal.js';
-import '@spriteful/drag-drop-list/drag-drop-list.js';
-import '@spriteful/cms-icons/cms-icons.js';
+import services   from '@longlost/services/services.js';
+import '@longlost/app-modal/app-modal.js';
+import '@longlost/drag-drop-list/drag-drop-list.js';
+import '@longlost/cms-icons/cms-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import './cms-event-card.js';
 
 
-class SpritefulCmsEvents extends SpritefulElement {
+class CmsEvents extends AppElement {
   static get is() { return 'cms-events'; }
 
   static get template() {
@@ -200,4 +200,4 @@ class SpritefulCmsEvents extends SpritefulElement {
 
 }
 
-window.customElements.define(SpritefulCmsEvents.is, SpritefulCmsEvents);
+window.customElements.define(CmsEvents.is, CmsEvents);

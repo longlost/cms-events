@@ -1,5 +1,5 @@
 {
-  "name": "@spriteful/cms-events",
+  "name": "@longlost/cms-events",
   "version": "2.0.1",
   "description": "cms event editing page",
   "main": "cms-events.js",
@@ -8,15 +8,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spriteful/cms-events.git"
+    "url": "git+https://github.com/longlost/cms-events.git"
   },
-  "author": "Spriteful spritefuldev@gmail.com",
+  "author": "Longlost Dev longlostdev@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/spriteful/cms-events/issues"
+    "url": "https://github.com/longlost/cms-events/issues"
   },
-  "homepage": "https://github.com/spriteful/cms-events#readme",
+  "homepage": "https://github.com/longlost/cms-events#readme",
   "dependencies": {
+    "@longlost/app-element": "^1.0.4",
+    "@longlost/app-header-overlay": "^1.0.1",
+    "@longlost/app-icons": "^1.0.6",
+    "@longlost/app-modal": "^1.0.0",
+    "@longlost/app-spinner": "^1.0.0",
+    "@longlost/cms-icons": "^1.0.2",
+    "@longlost/drag-drop-list": "^1.0.1",
+    "@longlost/image-editor": "^1.0.2",
+    "@longlost/lambda": "^1.3.9",
+    "@longlost/services": "^2.1.7",
+    "@longlost/utils": "^1.2.4",
     "@polymer/iron-icon": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
     "@polymer/paper-card": "^3.0.1",
@@ -25,25 +36,14 @@
     "@polymer/paper-input": "^3.0.2",
     "@polymer/paper-ripple": "^3.0.1",
     "@polymer/polymer": "^3.3.0",
-    "@spriteful/app-header-overlay": "^1.0.1",
-    "@spriteful/app-icons": "^1.0.6",
-    "@spriteful/app-modal": "^1.0.0",
-    "@spriteful/app-spinner": "^1.0.0",
-    "@spriteful/asg-icons": "^1.0.14",
-    "@spriteful/cms-icons": "^1.0.2",
-    "@spriteful/drag-drop-list": "^1.0.1",
-    "@spriteful/image-editor": "^1.0.2",
-    "@spriteful/lambda": "^1.3.9",
-    "@spriteful/services": "^2.1.7",
-    "@spriteful/spriteful-element": "^1.0.4",
-    "@spriteful/utils": "^1.2.4"
+    "@spriteful/asg-icons": "^1.0.15"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/test-fixture": "^4.0.2",
-    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
     "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.2",
     "wct-mocha": "^1.0.1"
   }
 }

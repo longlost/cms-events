@@ -7,29 +7,29 @@
  * @demo demo/index.html
  */
 import {
-  SpritefulElement, 
+  AppElement, 
   html
-}                 from '@spriteful/spriteful-element/spriteful-element.js';
+}                 from '@longlost/app-element/app-element.js';
 import {
   compose, 
   join, 
   map, 
   split
-}                 from '@spriteful/lambda/lambda.js';
+}                 from '@longlost/lambda/lambda.js';
 import {
   listen,
   message,
   schedule,
   warn
-}                 from '@spriteful/utils/utils.js';
+}                 from '@longlost/utils/utils.js';
 import htmlString from './cms-event-details.html';
-import services   from '@spriteful/services/services.js';
-import '@spriteful/app-header-overlay/app-header-overlay.js';
-import '@spriteful/app-icons/app-icons.js';
-import '@spriteful/app-modal/app-modal.js';
-import '@spriteful/app-spinner/app-spinner.js';
-import '@spriteful/cms-icons/cms-icons.js';
-import '@spriteful/image-editor/image-editor.js';
+import services   from '@longlost/services/services.js';
+import '@longlost/app-header-overlay/app-header-overlay.js';
+import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-modal/app-modal.js';
+import '@longlost/app-spinner/app-spinner.js';
+import '@longlost/cms-icons/cms-icons.js';
+import '@longlost/image-editor/image-editor.js';
 import '@spriteful/asg-icons/asg-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
@@ -44,7 +44,7 @@ const toLower             = str => str.toLowerCase();
 const removeSpacesAndCaps = compose(trim, split(' '), map(toLower), join(''));
 
 
-class SpritefulCmsEventDetails extends SpritefulElement {
+class CmsEventDetails extends AppElement {
   static get is() { return 'cms-event-details'; }
 
   static get template() {
@@ -164,7 +164,7 @@ class SpritefulCmsEventDetails extends SpritefulElement {
   __titleInputChanged(event) {
     const {value} = event.detail;
     this.set('_item.title', value);
-    // required for spriteful-checkout
+    // required for longlost-checkout
     this.set('_item.displayName', value); 
   }
   
@@ -172,7 +172,7 @@ class SpritefulCmsEventDetails extends SpritefulElement {
   __feeInputChanged(event) {
     const {value} = event.detail;
     this.set('_item.fee',    value);
-    // required for spriteful-checkout
+    // required for longlost-checkout
     this.set('_item.amount', Number(value).toFixed(2));
   }
 
@@ -332,4 +332,4 @@ class SpritefulCmsEventDetails extends SpritefulElement {
 
 }
 
-window.customElements.define(SpritefulCmsEventDetails.is, SpritefulCmsEventDetails);
+window.customElements.define(CmsEventDetails.is, CmsEventDetails);
